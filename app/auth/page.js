@@ -4,6 +4,9 @@ import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "../../lib/firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { Zilla_Slab } from "next/font/google";
+
+const zillaSlab = Zilla_Slab({ subsets: ["latin"], weight: ["400", "700"] });
 
 export default function AuthPage() {
   const [email, setEmail] = useState("");
@@ -53,42 +56,61 @@ export default function AuthPage() {
   }, [email, password, router]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-2xl font-bold mb-4">Sign Up / Login</h1>
-      
-      {error && <p className="text-red-500">{error}</p>}
-      
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="border p-2 mb-2 w-64"
-      />
-      
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="border p-2 mb-2 w-64"
-      />
-      
-      <button
-        onClick={handleSignUp}
-        className={`bg-blue-500 text-white p-2 w-64 mb-2 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
-        disabled={loading}
-      >
-        {loading ? "Signing Up..." : "Sign Up"}
-      </button>
-      
-      <button
-        onClick={handleLogin}
-        className={`bg-green-500 text-white p-2 w-64 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
-        disabled={loading}
-      >
-        {loading ? "Logging In..." : "Login"}
-      </button>
+    <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-stone-200">
+      {/* ✅ Welcome Message */}
+      <div className={`text-center p-6 ${zillaSlab.className}`}>
+        <h1 className="text-3xl font-bold mb-4">
+          Too often, the media and politicians talk about the impact of government policy decisions on the “average American family”.
+        </h1>
+        <p className="text-lg">
+          But who is the “average American family”? PRIA’s insights and recommendations are based on what matters to <span className="font-bold">you</span>.
+        </p>
+      </div>
+
+      {/* ✅ Auth Form */}
+      <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
+        <h2 className="text-xl font-semibold mb-4">Sign Up / Login</h2>
+
+        {error && <p className="text-red-500 mb-2">{error}</p>}
+
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="border p-2 mb-2 w-full rounded-lg"
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="border p-2 mb-2 w-full rounded-lg"
+        />
+
+        <button
+          onClick={handleSignUp}
+          className={`bg-blue-600 text-white font-bold py-3 px-6 w-full rounded-lg hover:bg-blue-700 transition-all ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          disabled={loading}
+        >
+          {loading ? "Signing Up..." : "Sign Up"}
+        </button>
+
+        <p className="mt-2 text-gray-600">Already have an account?</p>
+
+        <button
+          onClick={handleLogin}
+          className={`bg-green-600 text-white font-bold py-3 px-6 w-full rounded-lg hover:bg-green-700 transition-all mt-2 ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          disabled={loading}
+        >
+          {loading ? "Logging In..." : "Login"}
+        </button>
+      </div>
     </div>
   );
 }
